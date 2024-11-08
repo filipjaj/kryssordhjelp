@@ -19,7 +19,7 @@ export default function SearchSuggestions() {
   const [selectedSuggestion, setSelectedSuggestion] = useState<Suggestion | null>(null);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [letterCount, setLetterCount] = useState<number>(0);
-  const [searchMode, setSearchMode] = useState<'text' | 'pattern'>('text');
+  const [searchMode, setSearchMode] = useState<'text' | 'pattern'>('pattern');
 
   const fetchSuggestions = useCallback(async (searchQuery: string, isPattern: boolean = false) => {
     if (!searchQuery.trim()) {
@@ -124,6 +124,16 @@ export default function SearchSuggestions() {
     <div className="w-full max-w-2xl mx-auto">
       <div className="mb-6">
         <div className="flex space-x-4 mb-6">
+        <button
+            onClick={() => setSearchMode('pattern')}
+            className={`flex-1 py-2 px-4 rounded-lg transition-colors ${
+              searchMode === 'pattern'
+                ? 'bg-blue-500 text-white'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            Pattern Search
+          </button>
           <button
             onClick={() => setSearchMode('text')}
             className={`flex-1 py-2 px-4 rounded-lg transition-colors ${
@@ -134,24 +144,11 @@ export default function SearchSuggestions() {
           >
             Text Search
           </button>
-          <button
-            onClick={() => setSearchMode('pattern')}
-            className={`flex-1 py-2 px-4 rounded-lg transition-colors ${
-              searchMode === 'pattern'
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
-          >
-            Pattern Search
-          </button>
+   
         </div>
       </div>
 
-      <CategoryFilter
-        selectedCategories={selectedCategories}
-        onSelectCategory={handleCategorySelect}
-        onRemoveCategory={handleCategoryRemove}
-      />
+  
 
       {searchMode === 'text' ? (
         <>
